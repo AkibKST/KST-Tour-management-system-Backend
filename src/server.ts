@@ -1,10 +1,8 @@
-import express from "express";
 import { Server } from "http";
 import mongoose from "mongoose";
+import app from "./app";
 
 let server: Server;
-
-const app = express();
 
 const startServer = async () => {
   try {
@@ -15,7 +13,7 @@ const startServer = async () => {
     console.log("Connected to MongoDB!!!");
 
     server = app.listen(5000, () => {
-      console.log("Server is running on port 5000");
+      console.log("KST Tour Management System Server is running on port 5000");
     });
   } catch (error) {
     console.log("Error connecting to MongoDB:", error);
