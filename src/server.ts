@@ -21,3 +21,65 @@ const startServer = async () => {
 };
 
 startServer();
+
+// unhandled rejection error
+process.on("unhandledRejection", (error) => {
+  console.log("Unhandled Rejection detected.Server is Shutting Down...", error);
+
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
+
+  process.exit(1);
+});
+// ------------------------------
+
+// uncaught exception error
+process.on("uncaughtException", (error) => {
+  console.log("Uncaught Exception detected.Server is Shutting Down...", error);
+
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
+
+  process.exit(1);
+});
+// ------------------------------
+
+// signal termination sigterm
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received.Server is Shutting Down...");
+
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
+
+  process.exit(1);
+});
+// ------------------------------
+
+// signal termination sigint
+process.on("SIGINT", () => {
+  console.log("SIGINT received.Server is Shutting Down...");
+
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
+
+  process.exit(1);
+});
+// ------------------------------
+
+/**
+ * unhandled rejection error
+ * uncaught rejection error
+ * signal termination sigterm
+ */
