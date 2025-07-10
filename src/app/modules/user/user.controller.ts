@@ -2,23 +2,19 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { UserServices } from "./user.service";
+import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
 
-const createUser = async (req: Request, res: Response) => {
-  try {
-    const user = await UserServices.createUser(req.body);
+const createUser = catchAsync(async (req: Request, res: Response) => {
+  const user = await UserServices.createUser(req.body);
 
-    res.status(httpStatus.CREATED).json({
-      message: "User created successfully",
-      user,
-    });
-  } catch (err: any) {
-    console.log(err);
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-      message: `Internal Server Error!! ${err.message}`,
-      error: err.message,
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: "User created successfully",
+    data: user,
+  });
+});
 
 export const UserControllers = {
   createUser,
