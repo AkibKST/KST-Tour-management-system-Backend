@@ -11,6 +11,9 @@ const credentialsLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const loginInfo = await AuthServices.credentialsLogin(req.body);
 
+    // Set the access and refresh tokens in cookies
+    setAuthCookie(res, loginInfo);
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
@@ -23,7 +26,7 @@ const credentialsLogin = catchAsync(
 const getNewAccessToken = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     // Get refresh token from cookies
-    const refreshToken = req.headers.authorization || req.cookies.refreshToken;
+    const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
       throw new AppError(
         httpStatus.BAD_REQUEST,
